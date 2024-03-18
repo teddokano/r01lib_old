@@ -19,7 +19,6 @@ extern "C" {
 #include	"Ticker.h"
 #include	"InterruptIn.h"
 #include	"mcu.h"
-#include	"P3T1755.h"
 
 #define	r01lib_start	__attribute__((constructor)) void start_mcu() { init_mcu(); PRINTF("\r\n***  MCU initialized properly  ***\r\n"); }
 
