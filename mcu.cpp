@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  *
  */
+#define	SDK_DELAY_USE_DWT
 
 extern "C" {
 #include "peripherals.h"
