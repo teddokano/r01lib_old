@@ -45,7 +45,7 @@ void irq_handler( int num )
 	GPIO_GpioClearInterruptFlags( gpio_ptr[ num ], flags );
 	
 	for ( int i = 0; i < GPIO_BITS; i++ )
-		if ( cb_table[ num ][ i ] )
+		if ( cb_table[ num ][ i ] && (flags & (1 << i)) )
 			(cb_table[ num ][ i ])();
 }
 
