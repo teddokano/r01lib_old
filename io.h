@@ -15,34 +15,34 @@
 #define	PIN_OUTPUT			kGPIO_DigitalOutput
 #define	PIN_INPUT			kGPIO_DigitalInput
 
-#define	DISABLED_GPIO		(GPIO_Type *)NULL
+#define	DISABLED_GPIO		-1
 #define	DISABLED_PIN		0xFF
 
 #ifdef	CPU_MCXN947VDF
 	#define A0_GPIO				DISABLED_GPIO
 	#define A1_GPIO				DISABLED_GPIO
-	#define A2_GPIO				GPIO0
-	#define A3_GPIO				GPIO0
-	#define A4_GPIO				GPIO0
-	#define A5_GPIO				GPIO0
-	#define D0_GPIO				GPIO4
-	#define D1_GPIO				GPIO4
-	#define D2_GPIO				GPIO0
-	#define D3_GPIO				GPIO1
-	#define D4_GPIO				GPIO0
-	#define D5_GPIO				GPIO1
-	#define D6_GPIO				GPIO1
-	#define D7_GPIO				GPIO0
-	#define D8_GPIO				GPIO0
-	#define D9_GPIO				GPIO0
-	#define D10_GPIO			GPIO0
-	#define D11_GPIO			GPIO0
-	#define D12_GPIO			GPIO0
-	#define D13_GPIO			GPIO0
-	#define D18_GPIO			GPIO4
-	#define D19_GPIO			GPIO4
+	#define A2_GPIO				0
+	#define A3_GPIO				0
+	#define A4_GPIO				0
+	#define A5_GPIO				0
+	#define D0_GPIO				4
+	#define D1_GPIO				4
+	#define D2_GPIO				0
+	#define D3_GPIO				1
+	#define D4_GPIO				0
+	#define D5_GPIO				1
+	#define D6_GPIO				1
+	#define D7_GPIO				0
+	#define D8_GPIO				0
+	#define D9_GPIO				0
+	#define D10_GPIO			0
+	#define D11_GPIO			0
+	#define D12_GPIO			0
+	#define D13_GPIO			0
+	#define D18_GPIO			4
+	#define D19_GPIO			4
 	#define SW2_GPIO			D5_GPIO
-	#define SW3_GPIO			GPIO0
+	#define SW3_GPIO			0
 
 	#define A0_GPIO_PIN			DISABLED_PIN
 	#define A1_GPIO_PIN			DISABLED_PIN
@@ -75,30 +75,30 @@
 
 #else // CPU_MCXN947VDF
 
-	#define D0_GPIO				GPIO1
-	#define D1_GPIO				GPIO1
-	#define D2_GPIO				GPIO2
-	#define D3_GPIO				GPIO3
-	#define D4_GPIO				GPIO2
-	#define D5_GPIO				GPIO3
-	#define D6_GPIO				GPIO3
-	#define D7_GPIO				GPIO3
-	#define D8_GPIO				GPIO3
-	#define D9_GPIO				GPIO3
-	#define D10_GPIO			GPIO2
-	#define D11_GPIO			GPIO2
-	#define D12_GPIO			GPIO2
-	#define D13_GPIO			GPIO2
-	#define D18_GPIO			GPIO1
-	#define D19_GPIO			GPIO1
-	#define SW2_GPIO			GPIO3
-	#define SW3_GPIO			GPIO1
-	#define A0_GPIO				GPIO1
-	#define A1_GPIO				GPIO1
-	#define A2_GPIO				GPIO1
-	#define A3_GPIO				GPIO2
-	#define A4_GPIO				GPIO3
-	#define A5_GPIO				GPIO3
+	#define D0_GPIO				1
+	#define D1_GPIO				1
+	#define D2_GPIO				2
+	#define D3_GPIO				3
+	#define D4_GPIO				2
+	#define D5_GPIO				3
+	#define D6_GPIO				3
+	#define D7_GPIO				3
+	#define D8_GPIO				3
+	#define D9_GPIO				3
+	#define D10_GPIO			2
+	#define D11_GPIO			2
+	#define D12_GPIO			2
+	#define D13_GPIO			2
+	#define D18_GPIO			1
+	#define D19_GPIO			1
+	#define SW2_GPIO			3
+	#define SW3_GPIO			1
+	#define A0_GPIO				1
+	#define A1_GPIO				1
+	#define A2_GPIO				1
+	#define A3_GPIO				2
+	#define A4_GPIO				3
+	#define A5_GPIO				3
 
 	#define D0_GPIO_PIN			4U
 	#define D1_GPIO_PIN			5U
@@ -149,7 +149,9 @@ public:
 	
 	void	output( void );
 	void	input( void );
-	
+
+	void	pin_mux( int mux );
+		
 	/** A short hand for setting pins
 	 */
 	DigitalInOut&	operator=( bool v );
@@ -162,6 +164,7 @@ public:
 protected:
 	uint8_t		_pn; 
 	GPIO_Type	*gpio_n;
+	PORT_Type	*port_n;
 	uint8_t		gpio_pin; 
 	
 private:

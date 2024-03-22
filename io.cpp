@@ -5,13 +5,20 @@
  *
  */
 
+extern "C"
+{
+//#include	"fsl_common.h"
 #include	"fsl_gpio.h"
-
+#include	"fsl_port.h"
+}
 #include	"mcu.h"
 #include	"io.h"
 
+GPIO_Type*	gpio_type[]	= GPIO_BASE_PTRS;
+PORT_Type*	port_type[]	= PORT_BASE_PTRS;
+
 typedef	struct	_gpio_pin {
-	GPIO_Type	*base;
+	int			base;
 	uint32_t	pin;
 } gpio_pin;
 
@@ -49,12 +56,13 @@ extern "C" {
 DigitalInOut::DigitalInOut( uint8_t pin_num, bool direction, bool v )
 	: _pn( pin_num ), _dir( direction ), _value( v )
 {
-	if ( NULL == pins[ _pn ].base )
+	if ( -1 == pins[ _pn ].base )
 		return;
 	
 	gpio_pin_config_t led_config = { (gpio_pin_direction_t)direction, _value };
 	
-	gpio_n		= pins[ _pn ].base;
+	gpio_n		= gpio_type[ pins[ _pn ].base ];
+	port_n		= port_type[ pins[ _pn ].base ];
 	gpio_pin	= pins[ _pn ].pin;
 	
 	GPIO_PinInit( gpio_n, gpio_pin, &led_config );
@@ -65,7 +73,7 @@ DigitalInOut::~DigitalInOut(){}
 
 void DigitalInOut::value( bool value )
 {
-	if ( NULL == pins[ _pn ].base )
+	if ( -1 == pins[ _pn ].base )
 		return;
 
 	if ( kGPIO_DigitalOutput == _dir )
@@ -76,7 +84,7 @@ void DigitalInOut::value( bool value )
 
 bool DigitalInOut::value( void )
 {
-	if ( NULL == pins[ _pn ].base )
+	if ( -1 == pins[ _pn ].base )
 		return 0;
 
 	if ( kGPIO_DigitalInput == _dir )
@@ -93,6 +101,11 @@ void DigitalInOut::output( void )
 void DigitalInOut::input( void )
 {
 	_dir	= kGPIO_DigitalInput;
+}
+
+void DigitalInOut::pin_mux( int mux )
+{
+	PORT_SetPinMux( port_n, gpio_pin, (port_mux_t)mux );
 }
 
 DigitalInOut& DigitalInOut::operator=( bool v )
