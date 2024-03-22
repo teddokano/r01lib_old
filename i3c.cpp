@@ -41,8 +41,21 @@ volatile status_t		g_completionStatus;
 
 i3c_func_ptr			g_ibi_callback	= NULL;
 
-I3C::I3C( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq )
-	: I2C( i2c_freq )
+I3C::I3C( int sda, int scl )
+	: I2C( sda, scl )
+{
+	frequency( I2C_FREQ, I3C_OD_FREQ, I3C_PP_FREQ );
+
+	DigitalInOut	_scl( sda );
+	DigitalInOut	_sda( scl );
+	
+	_scl.pin_mux( kPORT_MuxAlt10 );
+	_sda.pin_mux( kPORT_MuxAlt10 );
+}
+
+I3C::~I3C() {}
+
+void I3C::frequency( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq )
 {
 	i3c_master_config_t	masterConfig;
 
@@ -59,8 +72,6 @@ I3C::I3C( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq )
 	/* Create I3C handle. */
 	I3C_MasterTransferCreateHandle( EXAMPLE_MASTER, &g_i3c_m_handle, &masterCallback, NULL );
 }
-
-I3C::~I3C() {}
 
 status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
 {

@@ -40,28 +40,24 @@ extern "C" {
 #define TRANSFER_BAUDRATE 500000U /*! Transfer baudrate - 500k */
 #endif
 
-SPI::SPI( uint32_t frequency, uint8_t mode )
+SPI::SPI( int mosi, int miso, int sclk, int cs )
 {
-	lpspi_master_config_t masterConfig;
-
-	LPSPI_MasterGetDefaultConfig(&masterConfig);
-	masterConfig.baudRate = frequency;
+	LPSPI_MasterGetDefaultConfig( &masterConfig );
+	
 	masterConfig.whichPcs = EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT;
 	masterConfig.pcsToSckDelayInNanoSec        = 1000000000U / (masterConfig.baudRate * 2U);
 	masterConfig.lastSckToPcsDelayInNanoSec    = 1000000000U / (masterConfig.baudRate * 2U);
 	masterConfig.betweenTransferDelayInNanoSec = 1000000000U / (masterConfig.baudRate * 2U);
 
-	masterConfig.cpol	= (lpspi_clock_polarity_t)((mode >> 0) & 0x1);
-	masterConfig.cpha	= (lpspi_clock_phase_t   )((mode >> 1) & 0x1);
-
-	LPSPI_MasterInit( EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, LPSPI_MASTER_CLK_FREQ );
+	frequency( SPI_FREQ );
+	mode( 0 );
 
 	//	pin enable
 	
-	DigitalInOut	_cs(   SPI_CS   );
-	DigitalInOut	_mosi( SPI_MOSI );
-	DigitalInOut	_miso( SPI_MOSI );
-	DigitalInOut	_sclk( SPI_SCLK );
+	DigitalInOut	_cs(   cs   );
+	DigitalInOut	_mosi( mosi );
+	DigitalInOut	_miso( miso );
+	DigitalInOut	_sclk( sclk );
 	
 	_mosi.pin_mux( 2 );
 	_sclk.pin_mux( 2 );
@@ -70,6 +66,21 @@ SPI::SPI( uint32_t frequency, uint8_t mode )
 }
 
 SPI::~SPI() {}
+
+void SPI::frequency( uint32_t frequency )
+{
+	masterConfig.baudRate = frequency;
+
+	LPSPI_MasterInit( EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, LPSPI_MASTER_CLK_FREQ );
+}
+
+void SPI::mode( uint8_t mode )
+{
+	masterConfig.cpol	= (lpspi_clock_polarity_t)((mode >> 0) & 0x1);
+	masterConfig.cpha	= (lpspi_clock_phase_t   )((mode >> 1) & 0x1);
+
+	LPSPI_MasterInit( EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, LPSPI_MASTER_CLK_FREQ );	
+}
 
 status_t SPI::write( uint8_t *wp, uint8_t *rp, int length )
 {

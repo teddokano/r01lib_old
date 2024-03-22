@@ -26,9 +26,11 @@ class I2C
 {
 public:
 	//I2C( int sda = I2C_SDA, int scl = I2C_SCL, uint32_t frequency = I2C_FREQ );
-	I2C( uint32_t frequency = I2C_FREQ );
+	I2C( int sda, int scl );
 	~I2C();
 	
+	virtual void		frequency( uint32_t frequency );
+
 	virtual status_t	reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length );
 	virtual status_t	reg_write( uint8_t targ, uint8_t reg, uint8_t data );
 	

@@ -20,11 +20,16 @@ extern "C" {
 class SPI
 {
 public:
-	SPI( uint32_t frequency = SPI_FREQ, uint8_t mode = 0 );
+	SPI( int mosi, int miso, int sclk, int cs );
 	~SPI();
+
+	void	frequency( uint32_t frequency = SPI_FREQ );
+	void	mode( uint8_t mode = 0 );
+
 	
-	virtual status_t	write( uint8_t *wp, uint8_t *rp, int length );
-	status_t	last_status;
+	virtual status_t		write( uint8_t *wp, uint8_t *rp, int length );
+	status_t				last_status;
+	lpspi_master_config_t	masterConfig;
 
 private:
 };

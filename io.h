@@ -44,6 +44,21 @@
 	#define D19_GPIO			4
 	#define SW2_GPIO			D5_GPIO
 	#define SW3_GPIO			0
+	#define	MB_AN_GPIO			DISABLED_GPIO
+	#define	MB_RST_GPIO			1
+	#define	MB_CS_GPIO			3
+	#define	MB_SCK_GPIO			3
+	#define	MB_MISO_GPIO		3
+	#define	MB_MOSI_GPIO		3
+	#define	MB_PWM_GPIO			3
+	#define	MB_INT_GPIO			5
+	#define	MB_RX_GPIO			1
+	#define	MB_TX_GPIO			1
+	#define	MB_SCL_GPIO			1
+	#define	MB_SDA_GPIO			1
+	#define	P3T_SDA_GPIO		1
+	#define	P3T_SCL_GPIO		1
+
 
 	#define A0_GPIO_PIN			DISABLED_PIN
 	#define A1_GPIO_PIN			DISABLED_PIN
@@ -69,6 +84,20 @@
 	#define D19_GPIO_PIN		1U
 	#define SW2_GPIO_PIN		A5_GPIO_PIN
 	#define SW3_GPIO_PIN		6
+	#define	MB_AN_GPIO_PIN		DISABLED_PIN
+	#define	MB_RST_GPIO_PIN		3
+	#define	MB_CS_GPIO_PIN		23
+	#define	MB_SCK_GPIO_PIN		21
+	#define	MB_MISO_GPIO_PIN	22
+	#define	MB_MOSI_GPIO_PIN	20
+	#define	MB_PWM_GPIO_PIN		19
+	#define	MB_INT_GPIO_PIN		7
+	#define	MB_RX_GPIO_PIN		16
+	#define	MB_TX_GPIO_PIN		17
+	#define	MB_SCL_GPIO_PIN		1
+	#define	MB_SDA_GPIO_PIN		0
+	#define	P3T_SDA_GPIO_PIN	16
+	#define	P3T_SCL_GPIO_PIN	17
 
 	#define	RED					D9
 	#define	GREEN				D10
@@ -100,6 +129,20 @@
 	#define A3_GPIO				2
 	#define A4_GPIO				3
 	#define A5_GPIO				3
+	#define	MB_AN_GPIO			3
+	#define	MB_RST_GPIO			3
+	#define	MB_CS_GPIO			1
+	#define	MB_SCK_GPIO			1
+	#define	MB_MISO_GPIO		1
+	#define	MB_MOSI_GPIO		1
+	#define	MB_PWM_GPIO			3
+	#define	MB_INT_GPIO			2
+	#define	MB_RX_GPIO			3
+	#define	MB_TX_GPIO			3
+	#define	MB_SCL_GPIO			3
+	#define	MB_SDA_GPIO			3
+	#define	P3T_SDA_GPIO		1
+	#define	P3T_SCL_GPIO		1
 
 	#define D0_GPIO_PIN			4U
 	#define D1_GPIO_PIN			5U
@@ -126,6 +169,21 @@
 	#define A4_GPIO_PIN			31U
 	#define A5_GPIO_PIN			30U
 
+	#define	MB_AN_GPIO_PIN		30
+	#define	MB_RST_GPIO_PIN		1
+	#define	MB_CS_GPIO_PIN		3
+	#define	MB_SCK_GPIO_PIN		1
+	#define	MB_MISO_GPIO_PIN	2
+	#define	MB_MOSI_GPIO_PIN	0
+	#define	MB_PWM_GPIO_PIN		12
+	#define	MB_INT_GPIO_PIN		5
+	#define	MB_RX_GPIO_PIN		14
+	#define	MB_TX_GPIO_PIN		15
+	#define	MB_SCL_GPIO_PIN		27
+	#define	MB_SDA_GPIO_PIN		28
+	#define	P3T_SDA_GPIO_PIN	16
+	#define	P3T_SCL_GPIO_PIN	17
+
 	#define	RED					D5
 	#define	GREEN				D6
 	#define	BLUE				D3
@@ -141,7 +199,11 @@
 #define	SPI_SCLK			D13
 
 enum { 	D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D18, D19,
-		A0, A1, A2, A3, A4, A5, SW2, SW3 };
+		A0, A1, A2, A3, A4, A5, 
+		SW2, SW3,
+		MB_AN, MB_RST, MB_CS, MB_SCK, MB_MISO, MB_MOSI, MB_PWM, MB_INT, MB_RX, MB_TX, MB_SCL, MB_SDA, 
+		I3C_SDA, I3C_SCL
+};
 
 #define	PIN_LED_OFF	true
 #define	PIN_LED_ON	false

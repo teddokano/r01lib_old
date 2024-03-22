@@ -34,22 +34,26 @@ extern "C" {
 #endif
 
 
+I2C::I2C( int sda, int scl )
+{
+	frequency( I2C_FREQ );
+	
+	DigitalInOut	_scl( scl );
+	DigitalInOut	_sda( sda );
+	
+	_scl.pin_mux( 2 );
+	_sda.pin_mux( 2 );
+}
 
-I2C::I2C( uint32_t frequency )
+
+
+void I2C::frequency( uint32_t frequency )
 {
 	lpi2c_master_config_t	masterConfig;
 
 	LPI2C_MasterGetDefaultConfig( &masterConfig );
 	masterConfig.baudRate_Hz	= frequency;
 	LPI2C_MasterInit( EXAMPLE_I2C_MASTER, &masterConfig, LPI2C_MASTER_CLOCK_FREQUENCY );
-	
-	//	pin enable
-	
-	DigitalInOut	_scl( I2C_SCL );
-	DigitalInOut	_sda( I2C_SDA );
-	
-	_scl.pin_mux( 2 );
-	_sda.pin_mux( 2 );
 }
 
 I2C::~I2C() {}
