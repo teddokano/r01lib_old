@@ -79,7 +79,10 @@ SPI::SPI( int mosi, int miso, int sclk, int cs )
 #endif
 }
 
-SPI::~SPI() {}
+SPI::~SPI()
+{
+	LPSPI_Deinit( EXAMPLE_LPSPI_MASTER_BASEADDR );
+}
 
 void SPI::frequency( uint32_t frequency )
 {

@@ -44,6 +44,7 @@ static gpio_pin pins[]	= {
 	{ A4_GPIO,  A4_GPIO_PIN  },
 	{ A5_GPIO,  A5_GPIO_PIN  },
 	{ SW2_GPIO, SW2_GPIO_PIN },
+	{ SW3_GPIO, SW3_GPIO_PIN },
 	{ MB_AN_GPIO,	MB_AN_GPIO_PIN   },
 	{ MB_RST_GPIO,	MB_RST_GPIO_PIN  },
 	{ MB_CS_GPIO,	MB_CS_GPIO_PIN   },

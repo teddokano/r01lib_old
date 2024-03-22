@@ -25,8 +25,7 @@ extern "C" {
 class I2C
 {
 public:
-	//I2C( int sda = I2C_SDA, int scl = I2C_SCL, uint32_t frequency = I2C_FREQ );
-	I2C( int sda, int scl );
+	I2C( int sda, int scl, bool no_hw	= false );
 	~I2C();
 	
 	virtual void		frequency( uint32_t frequency );

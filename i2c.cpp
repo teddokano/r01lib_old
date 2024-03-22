@@ -34,13 +34,16 @@ extern "C" {
 #endif
 
 
-I2C::I2C( int sda, int scl )
+I2C::I2C( int sda, int scl, bool no_hw )
 {
+	if ( no_hw )
+		return;
+	
 #ifdef	CPU_MCXN947VDF
 	constexpr int	mux_setting	= 2;
 #else
 	constexpr int	mux_setting	= kPORT_MuxAlt3;
-	RESET_ReleasePeripheralReset(kLPI2C0_RST_SHIFT_RSTn);
+	RESET_ReleasePeripheralReset( kLPI2C0_RST_SHIFT_RSTn );
 #endif
 
 	LPI2C_MasterGetDefaultConfig( &masterConfig );
@@ -55,7 +58,10 @@ I2C::I2C( int sda, int scl )
 	_sda.pin_mux( mux_setting );
 }
 
-
+I2C::~I2C()
+{
+	LPI2C_MasterDeinit( EXAMPLE_I2C_MASTER );
+}
 
 void I2C::frequency( uint32_t frequency )
 {
@@ -64,8 +70,6 @@ void I2C::frequency( uint32_t frequency )
 	LPI2C_MasterDeinit( EXAMPLE_I2C_MASTER );
 	LPI2C_MasterInit( EXAMPLE_I2C_MASTER, &masterConfig, LPI2C_MASTER_CLOCK_FREQUENCY );
 }
-
-I2C::~I2C() {}
 
 status_t I2C::write( uint8_t address, const uint8_t *dp, int length, bool stop )
 {

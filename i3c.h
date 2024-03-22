@@ -72,7 +72,10 @@ public:
 private:
 	status_t	xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
 	
-	static const	i3c_master_transfer_callback_t	masterCallback;
+	static const i3c_master_transfer_callback_t	masterCallback;
+	i3c_master_config_t							masterConfig;
+
+
 };
 
 #endif // R01LIB_I3C_H
