@@ -17,6 +17,7 @@ extern "C" {
 #include "board.h"
 }
 
+#include	"io.h"
 #include	"spi.h"
 
 
@@ -54,6 +55,18 @@ SPI::SPI( uint32_t frequency, uint8_t mode )
 	masterConfig.cpha	= (lpspi_clock_phase_t   )((mode >> 1) & 0x1);
 
 	LPSPI_MasterInit( EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, LPSPI_MASTER_CLK_FREQ );
+
+	//	pin enable
+	
+	DigitalInOut	_cs(   SPI_CS   );
+	DigitalInOut	_mosi( SPI_MOSI );
+	DigitalInOut	_miso( SPI_MOSI );
+	DigitalInOut	_sclk( SPI_SCLK );
+	
+	_mosi.pin_mux( 2 );
+	_sclk.pin_mux( 2 );
+	_miso.pin_mux( 2 );
+	_cs.pin_mux(   2 );
 }
 
 SPI::~SPI() {}

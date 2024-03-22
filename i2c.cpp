@@ -16,9 +16,11 @@ extern "C" {
 #include "board.h"
 #include "fsl_debug_console.h"
 #include "fsl_lpi2c.h"
+#include "fsl_port.h"
 }
 
 #include	"i2c.h"
+#include	"io.h"
 
 
 #ifdef	CPU_MCXN947VDF
@@ -40,6 +42,14 @@ I2C::I2C( uint32_t frequency )
 	LPI2C_MasterGetDefaultConfig( &masterConfig );
 	masterConfig.baudRate_Hz	= frequency;
 	LPI2C_MasterInit( EXAMPLE_I2C_MASTER, &masterConfig, LPI2C_MASTER_CLOCK_FREQUENCY );
+	
+	//	pin enable
+	
+	DigitalInOut	_scl( I2C_SCL );
+	DigitalInOut	_sda( I2C_SDA );
+	
+	_scl.pin_mux( 2 );
+	_sda.pin_mux( 2 );
 }
 
 I2C::~I2C() {}

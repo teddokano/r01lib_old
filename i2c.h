@@ -14,8 +14,6 @@ extern "C" {
 }
 
 
-#include	"i2c.h"
-
 #define	I2C_FREQ		400000UL
 
 #define	STOP			true
@@ -27,6 +25,7 @@ extern "C" {
 class I2C
 {
 public:
+	//I2C( int sda = I2C_SDA, int scl = I2C_SCL, uint32_t frequency = I2C_FREQ );
 	I2C( uint32_t frequency = I2C_FREQ );
 	~I2C();
 	

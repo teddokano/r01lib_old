@@ -8,9 +8,10 @@
 #ifndef R01LIB_IO_H
 #define R01LIB_IO_H
 
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "board.h"
+#include	"fsl_port.h"
+#include	"pin_mux.h"
+#include	"clock_config.h"
+#include	"board.h"
 
 #define	PIN_OUTPUT			kGPIO_DigitalOutput
 #define	PIN_INPUT			kGPIO_DigitalInput
@@ -69,9 +70,9 @@
 	#define SW2_GPIO_PIN		A5_GPIO_PIN
 	#define SW3_GPIO_PIN		6
 
-	#define	RED		D9
-	#define	GREEN	D10
-	#define	BLUE	D6
+	#define	RED					D9
+	#define	GREEN				D10
+	#define	BLUE				D6
 
 #else // CPU_MCXN947VDF
 
@@ -125,12 +126,19 @@
 	#define A4_GPIO_PIN			31U
 	#define A5_GPIO_PIN			30U
 
-	#define	RED		D5
-	#define	GREEN	D6
-	#define	BLUE	D3
-
+	#define	RED					D5
+	#define	GREEN				D6
+	#define	BLUE				D3
 
 #endif // CPU_MCXN947VDF
+
+#define	I2C_SDA				D18
+#define	I2C_SCL				D19
+
+#define	SPI_CS				D10
+#define	SPI_MOSI			D11
+#define	SPI_MISO			D12
+#define	SPI_SCLK			D13
 
 enum { 	D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D18, D19,
 		A0, A1, A2, A3, A4, A5, SW2, SW3 };
