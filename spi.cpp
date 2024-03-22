@@ -42,12 +42,19 @@ extern "C" {
 
 SPI::SPI( int mosi, int miso, int sclk, int cs )
 {
+#ifdef	CPU_MCXN947VDF
+#else
+	RESET_ReleasePeripheralReset( kLPSPI1_RST_SHIFT_RSTn );
+#endif
+
 	LPSPI_MasterGetDefaultConfig( &masterConfig );
 	
 	masterConfig.whichPcs = EXAMPLE_LPSPI_MASTER_PCS_FOR_INIT;
 	masterConfig.pcsToSckDelayInNanoSec        = 1000000000U / (masterConfig.baudRate * 2U);
 	masterConfig.lastSckToPcsDelayInNanoSec    = 1000000000U / (masterConfig.baudRate * 2U);
 	masterConfig.betweenTransferDelayInNanoSec = 1000000000U / (masterConfig.baudRate * 2U);
+
+	LPSPI_MasterInit( EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, LPSPI_MASTER_CLK_FREQ );
 
 	frequency( SPI_FREQ );
 	mode( 0 );
@@ -58,11 +65,18 @@ SPI::SPI( int mosi, int miso, int sclk, int cs )
 	DigitalInOut	_mosi( mosi );
 	DigitalInOut	_miso( miso );
 	DigitalInOut	_sclk( sclk );
-	
+
+#ifdef	CPU_MCXN947VDF
 	_mosi.pin_mux( 2 );
 	_sclk.pin_mux( 2 );
 	_miso.pin_mux( 2 );
 	_cs.pin_mux(   2 );
+#else
+	_sclk.pin_mux( 2 );
+	_mosi.pin_mux( 2 );
+	_miso.pin_mux( 2 );
+	_cs.pin_mux(   2 );
+#endif
 }
 
 SPI::~SPI() {}
@@ -71,6 +85,11 @@ void SPI::frequency( uint32_t frequency )
 {
 	masterConfig.baudRate = frequency;
 
+	masterConfig.pcsToSckDelayInNanoSec        = 1000000000U / (masterConfig.baudRate * 2U);
+	masterConfig.lastSckToPcsDelayInNanoSec    = 1000000000U / (masterConfig.baudRate * 2U);
+	masterConfig.betweenTransferDelayInNanoSec = 1000000000U / (masterConfig.baudRate * 2U);
+
+	LPSPI_Deinit( EXAMPLE_LPSPI_MASTER_BASEADDR );
 	LPSPI_MasterInit( EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, LPSPI_MASTER_CLK_FREQ );
 }
 
@@ -79,6 +98,7 @@ void SPI::mode( uint8_t mode )
 	masterConfig.cpol	= (lpspi_clock_polarity_t)((mode >> 0) & 0x1);
 	masterConfig.cpha	= (lpspi_clock_phase_t   )((mode >> 1) & 0x1);
 
+	LPSPI_Deinit( EXAMPLE_LPSPI_MASTER_BASEADDR );
 	LPSPI_MasterInit( EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, LPSPI_MASTER_CLK_FREQ );	
 }
 

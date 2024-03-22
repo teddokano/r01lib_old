@@ -46,7 +46,8 @@ public:
 	virtual status_t	ccc_set( uint8_t ccc, uint8_t addr, uint8_t data );
 	virtual status_t	ccc_get( uint8_t ccc, uint8_t addr, uint8_t *dp, uint8_t length );
 
-	status_t	last_status;
+	status_t				last_status;
+	lpi2c_master_config_t	masterConfig;
 
 private:
 };

@@ -36,23 +36,32 @@ extern "C" {
 
 I2C::I2C( int sda, int scl )
 {
-	frequency( I2C_FREQ );
+#ifdef	CPU_MCXN947VDF
+	constexpr int	mux_setting	= 2;
+#else
+	constexpr int	mux_setting	= kPORT_MuxAlt3;
+	RESET_ReleasePeripheralReset(kLPI2C0_RST_SHIFT_RSTn);
+#endif
+
+	LPI2C_MasterGetDefaultConfig( &masterConfig );
+	LPI2C_MasterInit( EXAMPLE_I2C_MASTER, &masterConfig, LPI2C_MASTER_CLOCK_FREQUENCY );
+	
+//	frequency( I2C_FREQ );
 	
 	DigitalInOut	_scl( scl );
 	DigitalInOut	_sda( sda );
 	
-	_scl.pin_mux( 2 );
-	_sda.pin_mux( 2 );
+	_scl.pin_mux( mux_setting );
+	_sda.pin_mux( mux_setting );
 }
 
 
 
 void I2C::frequency( uint32_t frequency )
 {
-	lpi2c_master_config_t	masterConfig;
-
-	LPI2C_MasterGetDefaultConfig( &masterConfig );
 	masterConfig.baudRate_Hz	= frequency;
+
+	LPI2C_MasterDeinit( EXAMPLE_I2C_MASTER );
 	LPI2C_MasterInit( EXAMPLE_I2C_MASTER, &masterConfig, LPI2C_MASTER_CLOCK_FREQUENCY );
 }
 

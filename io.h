@@ -141,6 +141,7 @@
 	#define	MB_TX_GPIO			3
 	#define	MB_SCL_GPIO			3
 	#define	MB_SDA_GPIO			3
+
 	#define	P3T_SDA_GPIO		1
 	#define	P3T_SCL_GPIO		1
 
@@ -181,6 +182,7 @@
 	#define	MB_TX_GPIO_PIN		15
 	#define	MB_SCL_GPIO_PIN		27
 	#define	MB_SDA_GPIO_PIN		28
+
 	#define	P3T_SDA_GPIO_PIN	16
 	#define	P3T_SCL_GPIO_PIN	17
 
