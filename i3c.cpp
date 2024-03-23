@@ -45,6 +45,21 @@ i3c_func_ptr			g_ibi_callback	= NULL;
 I3C::I3C( int sda, int scl, uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq )
 	: I2C( sda, scl, true )
 {
+#ifdef	CPU_MCXN947VDF
+	if ( (sda == I3C_SDA) && (scl == I3C_SCL) )
+		;
+	else
+		panic( "FRDM-MCXN947 only support I3C_SDA/I3C_SCL pins for I3C" );
+#else // CPU_MCXN947VDF
+	if ( (sda == I3C_SDA) && (scl == I3C_SCL) )
+		;
+	else if ( (sda == I2C_SDA) && (scl == I2C_SCL) )
+		;
+	else
+		panic( "FRDM-MCXA153 supports I3C_SDA/I3C_SCL or I2C_SDA(D18)/I2C_SCL(D19) pins for I3C" );
+#endif // CPU_MCXN947VDF
+	
+	
 	I3C_MasterGetDefaultConfig( &masterConfig );
 
 	masterConfig.baudRate_Hz.i2cBaud          = i2c_freq;

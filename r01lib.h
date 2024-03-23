@@ -20,6 +20,7 @@ extern "C" {
 #include	"InterruptIn.h"
 #include	"mcu.h"
 
-#define	r01lib_start	__attribute__((constructor)) void start_mcu() { init_mcu(); PRINTF("\r\n***  MCU initialized properly  ***\r\n"); }
+#define	r01lib_start_w_message	__attribute__((constructor)) void start_mcu() { init_mcu(); PRINTF("\r\n***  MCU initialized properly  ***\r\n"); }
+#define	r01lib_start			__attribute__((constructor)) void start_mcu() { init_mcu(); }
 
 #endif // R01LIB_R01LIB_H

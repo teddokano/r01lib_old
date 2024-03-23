@@ -90,3 +90,28 @@ void wait( float delayTime_sec )
 	SDK_DelayAtLeastUs( (uint32_t)(delayTime_sec * 1000000.0), CLOCK_GetCoreSysClkFreq() );
 }
 
+void panic( const char *s )
+{
+	printf( "error: %s", s );
+	
+	typedef struct			{ int on; int off; }	single_code_t;
+	static single_code_t	code[]	= { { 1, 1 }, { 1, 1 }, { 1, 3 }, { 3, 1 },  { 3, 1 }, { 3, 3 }, { 1, 1 }, { 1, 1 }, { 1, 7 } };
+	DigitalOut				leds[]	= { DigitalOut( RED ), DigitalOut( GREEN ), DigitalOut( BLUE ) };
+	float					duration	= 0.07;
+	
+	leds[ 0 ]	= 1;
+	leds[ 1 ]	= 1;
+	leds[ 2 ]	= 1;
+	
+	while ( true )
+	{
+		for ( unsigned long i = 0; i < sizeof( code ) / sizeof( single_code_t ); i++ )
+		{
+			leds[ 0 ]	= 0;
+			wait( code[ i ].on  * duration );
+			leds[ 0 ]	= 1;
+			wait( code[ i ].off * duration );
+		}
+	}
+}
+

@@ -21,6 +21,7 @@ extern "C" {
 
 #include	"i2c.h"
 #include	"io.h"
+#include	"mcu.h"
 
 
 #ifdef	CPU_MCXN947VDF
@@ -40,8 +41,24 @@ I2C::I2C( int sda, int scl, bool no_hw )
 		return;
 	
 #ifdef	CPU_MCXN947VDF
+	if ( (sda == I2C_SDA) && (scl == I2C_SCL) )
+		;
+	else
+		panic( "FRDM-MCXN947 only support I2C_SDA(D18)/I2C_SCL(D19) pins for I2C" );
+	
 	constexpr int	mux_setting	= 2;
 #else
+	if ( (sda == I3C_SDA) && (scl == I3C_SCL) )
+		;
+	else if ( (sda == I2C_SDA) && (scl == I2C_SCL) )
+		;
+	else if ( (sda == MB_SDA) && (scl == MB_SCL) )
+		;
+	else if ( (sda == MB_MOSI) && (scl == MB_SCK) )
+		;
+	else
+		panic( "FRDM-MCXA153 supports I3C_SDA/I3C_SCL, I2C_SDA(D18)/I2C_SCL(D19), MB_SDA/MB_SCL or MB_MOSI/MB_SCK pins for I2C" );
+
 	constexpr int	mux_setting	= kPORT_MuxAlt3;
 	RESET_ReleasePeripheralReset( kLPI2C0_RST_SHIFT_RSTn );
 #endif
