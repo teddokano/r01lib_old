@@ -41,14 +41,15 @@ volatile status_t		g_completionStatus;
 
 i3c_func_ptr			g_ibi_callback	= NULL;
 
-I3C::I3C( int sda, int scl )
+//I3C::I3C( int sda, int scl )
+I3C::I3C( int sda, int scl, uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq )
 	: I2C( sda, scl, true )
 {
 	I3C_MasterGetDefaultConfig( &masterConfig );
 
-	masterConfig.baudRate_Hz.i2cBaud          = I2C_FREQ;
-	masterConfig.baudRate_Hz.i3cOpenDrainBaud = I3C_OD_FREQ;
-	masterConfig.baudRate_Hz.i3cPushPullBaud  = I3C_PP_FREQ;
+	masterConfig.baudRate_Hz.i2cBaud          = i2c_freq;
+	masterConfig.baudRate_Hz.i3cOpenDrainBaud = i3c_od_freq;
+	masterConfig.baudRate_Hz.i3cPushPullBaud  = i3c_pp_freq;	
 	masterConfig.enableOpenDrainStop          = false;
 	masterConfig.disableTimeout               = true;
 	
@@ -68,6 +69,7 @@ I3C::~I3C(){
 	I3C_MasterDeinit( EXAMPLE_MASTER );
 }
 
+#if 0
 void I3C::frequency( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq )
 {
 	masterConfig.baudRate_Hz.i2cBaud          = i2c_freq;
@@ -77,6 +79,7 @@ void I3C::frequency( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_fr
 	I3C_MasterDeinit( EXAMPLE_MASTER );
 	I3C_MasterInit( EXAMPLE_MASTER, &masterConfig, I3C_MASTER_CLOCK_FREQUENCY );
 }
+#endif
 
 status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
 {

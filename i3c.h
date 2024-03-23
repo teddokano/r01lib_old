@@ -51,10 +51,11 @@ typedef void (*i3c_func_ptr)(void);
 class I3C : public I2C
 {
 public:
-	I3C( int sda, int scl );
+//	I3C( int sda, int scl );
+	I3C( int sda, int scl, uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
 	~I3C();
 	
-	void		frequency( uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
+//	void		frequency( uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
 
 	status_t	write( uint8_t targ, const uint8_t *dp, int length, bool stop = STOP );	
 	status_t	read( uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
