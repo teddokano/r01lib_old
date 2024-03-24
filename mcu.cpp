@@ -22,8 +22,21 @@ extern "C" {
 
 #include "mcu.h"
 
-r01lib_start
-r01lib_message
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wprio-ctor-dtor"
+__attribute__((constructor(0))) 
+void start_mcu()
+{
+	init_mcu();
+}
+
+__attribute__((constructor(1)))
+void start_message()
+{
+	PRINTF("\r\n***  MCU initialized properly  ***\r\n");
+}
+#pragma GCC diagnostic pop
+
 
 void init_mcu( void )
 {
