@@ -22,6 +22,9 @@ extern "C" {
 
 #include "mcu.h"
 
+r01lib_start
+r01lib_message
+
 void init_mcu( void )
 {
 #ifdef	CPU_MCXN947VDF
