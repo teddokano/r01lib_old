@@ -23,7 +23,6 @@ extern "C" {
 #include	"io.h"
 #include	"mcu.h"
 
-
 #ifdef	CPU_MCXN947VDF
 #define EXAMPLE_I2C_MASTER_BASE			(LPI2C2_BASE)
 #define LPI2C_MASTER_CLOCK_FREQUENCY 	CLOCK_GetLPFlexCommClkFreq(2u)
@@ -33,7 +32,6 @@ extern "C" {
 #define LPI2C_MASTER_CLOCK_FREQUENCY	CLOCK_GetLpi2cClkFreq()
 #define EXAMPLE_I2C_MASTER				((LPI2C_Type *)EXAMPLE_I2C_MASTER_BASE)
 #endif
-
 
 I2C::I2C( int sda, int scl, bool no_hw )
 {
@@ -119,7 +117,6 @@ status_t I2C::write( uint8_t address, const uint8_t *dp, int length, bool stop )
 	return kStatus_Success;
 }
 
-
 status_t I2C::read( uint8_t address, uint8_t *dp, int length, bool stop )
 {
 	status_t	r = kStatus_Fail;
@@ -143,11 +140,6 @@ status_t I2C::read( uint8_t address, uint8_t *dp, int length, bool stop )
 
 	return kStatus_Success;
 }
-
-
-
-
-
 
 status_t I2C::reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length )
 {
@@ -195,7 +187,6 @@ uint8_t I2C::read( uint8_t targ, bool stop )
 
 	return data;
 }
-
 
 status_t I2C::ccc_set( uint8_t ccc, uint8_t addr, uint8_t data )
 {
