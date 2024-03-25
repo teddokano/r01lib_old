@@ -59,7 +59,6 @@ I3C::I3C( int sda, int scl, uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3
 		panic( "FRDM-MCXA153 supports I3C_SDA/I3C_SCL or I2C_SDA(D18)/I2C_SCL(D19) pins for I3C" );
 #endif // CPU_MCXN947VDF
 	
-	
 	I3C_MasterGetDefaultConfig( &masterConfig );
 
 	masterConfig.baudRate_Hz.i2cBaud          = i2c_freq;
@@ -67,6 +66,8 @@ I3C::I3C( int sda, int scl, uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3
 	masterConfig.baudRate_Hz.i3cPushPullBaud  = i3c_pp_freq;	
 	masterConfig.enableOpenDrainStop          = false;
 	masterConfig.disableTimeout               = true;
+	
+	bus_type	= kI3C_TypeI3CSdr;
 	
 	I3C_MasterInit( EXAMPLE_MASTER, &masterConfig, I3C_MASTER_CLOCK_FREQUENCY );
 
@@ -98,13 +99,19 @@ void I3C::frequency( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_fr
 
 status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
 {
-	return xfer( kI3C_Write, kI3C_TypeI3CSdr, targ, (uint8_t *)dp, length, stop );
+	return xfer( kI3C_Write, bus_type, targ, (uint8_t *)dp, length, stop );
 }
 
 status_t I3C::read( uint8_t targ, uint8_t *dp, int length, bool stop )
 {
-	return xfer( kI3C_Read, kI3C_TypeI3CSdr, targ, dp, length, stop );
+	return xfer( kI3C_Read, bus_type, targ, dp, length, stop );
 }
+
+void I3C::mode( i3c_bus_type_t mode )
+{
+	bus_type	= mode;
+}
+
 
 status_t I3C::xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop )
 {

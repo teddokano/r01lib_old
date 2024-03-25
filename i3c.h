@@ -30,6 +30,11 @@
 #define I3C_PP_FREQ		12500000UL
 #endif //HIGHER_SCL_FREQ
 
+#define	I3C_MODE		kI3C_TypeI3CSdr
+#define	I2C_MODE		kI3C_TypeI2C
+#define	I3CDDR_MODE		kI3C_TypeI3CDdr
+
+
 enum CCC
 {
 	BROADCAST_ENEC		= 0x00,
@@ -60,6 +65,8 @@ public:
 	status_t	write( uint8_t targ, const uint8_t *dp, int length, bool stop = STOP );	
 	status_t	read( uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
 	
+	void 		mode( i3c_bus_type_t mode );
+
 	uint8_t		check_IBI( void );
 	void		set_IBI_callback( i3c_func_ptr fp );
 
@@ -73,6 +80,7 @@ public:
 private:
 	status_t	xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
 	
+	i3c_bus_type_t								bus_type;
 	static const i3c_master_transfer_callback_t	masterCallback;
 	i3c_master_config_t							masterConfig;
 
