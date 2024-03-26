@@ -24,15 +24,8 @@
 #define	I3C_BROADCAST_ADDR		0x7E
 #define	PID_LENGTH				6
 
-//#define	LOWER_SCL_FREQ
-
-#ifdef	LOWER_SCL_FREQ
-#define I3C_OD_FREQ		1500000UL
-#define I3C_PP_FREQ		4000000UL
-#else
 #define I3C_OD_FREQ		4000000UL
 #define I3C_PP_FREQ		12500000UL
-#endif //HIGHER_SCL_FREQ
 
 #define	I3C_MODE		kI3C_TypeI3CSdr
 #define	I2C_MODE		kI3C_TypeI2C
@@ -65,9 +58,9 @@ public:
 	 *
 	 * @param sda pin number to connect SDA
 	 * @param scl pin number to connect SCL
-	 * @param i2c_freq (option) define scl frequency while I2C operation
-	 * @param i3c_od_freq (option) define scl frequency while I3C open-drain operation
-	 * @param i3c_pp_freq (option) define scl frequency while I3C push-pull operation
+	 * @param i2c_freq (option) define default scl frequency while I2C operation
+	 * @param i3c_od_freq (option) define default scl frequency while I3C open-drain operation
+	 * @param i3c_pp_freq (option) define default scl frequency while I3C push-pull operation
 	 */
 	I3C( int sda, int scl, uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
 
@@ -75,9 +68,13 @@ public:
 	 */
 	~I3C();
 	
-	/** Frequency settings (nt supportted yet)
+	/** Frequency settings
 	 */
-//	void		frequency( uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
+	void		frequency( uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
+
+	/** Frequency settings reverted to default
+	 */
+	void		revert_frequency( void );
 
 	/** write transaction
 	 *
@@ -125,7 +122,7 @@ public:
 	 * @param length data length
 	 * @return status_t
 	 */
-	status_t	ccc_broadcast( uint8_t ccc, const uint8_t *dp, uint8_t length );
+	status_t	ccc_broadcast( uint8_t ccc, const uint8_t *dp, uint8_t length, bool first_time = false );
 
 	/** CCC set
 	 *  
@@ -160,6 +157,7 @@ private:
 	i3c_bus_type_t								bus_type;
 	static const i3c_master_transfer_callback_t	masterCallback;
 	i3c_master_config_t							masterConfig;
+	bool										first_broadcast;
 
 
 };

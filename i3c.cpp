@@ -74,6 +74,8 @@ I3C::I3C( int sda, int scl, uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3
 	/* Create I3C handle. */
 	I3C_MasterTransferCreateHandle( EXAMPLE_MASTER, &g_i3c_m_handle, &masterCallback, NULL );
 
+	first_broadcast	= true;
+	
 	DigitalInOut	_scl( sda );
 	DigitalInOut	_sda( scl );
 	
@@ -85,17 +87,21 @@ I3C::~I3C(){
 	I3C_MasterDeinit( EXAMPLE_MASTER );
 }
 
-#if 0
 void I3C::frequency( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq )
 {
-	masterConfig.baudRate_Hz.i2cBaud          = i2c_freq;
-	masterConfig.baudRate_Hz.i3cOpenDrainBaud = i3c_od_freq;
-	masterConfig.baudRate_Hz.i3cPushPullBaud  = i3c_pp_freq;
+	i3c_baudrate_hz_t	baudRate_Hz;
 	
-	I3C_MasterDeinit( EXAMPLE_MASTER );
-	I3C_MasterInit( EXAMPLE_MASTER, &masterConfig, I3C_MASTER_CLOCK_FREQUENCY );
+	baudRate_Hz.i2cBaud				= i2c_freq;
+	baudRate_Hz.i3cOpenDrainBaud	= i3c_od_freq;
+	baudRate_Hz.i3cPushPullBaud  	= i3c_pp_freq;
+
+	I3C_MasterSetBaudRate( EXAMPLE_MASTER, &baudRate_Hz, I3C_MASTER_CLOCK_FREQUENCY );
 }
-#endif
+
+void I3C::revert_frequency( void )
+{
+	I3C_MasterSetBaudRate( EXAMPLE_MASTER, &(masterConfig.baudRate_Hz), I3C_MASTER_CLOCK_FREQUENCY );
+}
 
 status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
 {
@@ -133,14 +139,26 @@ void I3C::set_IBI_callback( i3c_func_ptr fp )
 }
 
 
-status_t I3C::ccc_broadcast( uint8_t ccc, const uint8_t *dp, uint8_t length )
+status_t I3C::ccc_broadcast( uint8_t ccc, const uint8_t *dp, uint8_t length, bool first_time )
 {
-	uint8_t	bp[ REG_RW_BUFFER_SIZE ];
-
+	uint8_t		bp[ REG_RW_BUFFER_SIZE ];
+	status_t	r_code;
+	
 	bp[ 0 ]	= ccc;
 	memcpy( (uint8_t *)bp + 1, (uint8_t *)dp, length );
 	
-	return write( I3C_BROADCAST_ADDR, bp, length + 1 );
+	if ( first_time || first_broadcast )
+	{
+		first_broadcast	= false;
+		
+		frequency( 400000, 2000000, 2000000 );
+		r_code	= write( I3C_BROADCAST_ADDR, bp, length + 1 );
+		revert_frequency();
+	}
+	
+	r_code	= write( I3C_BROADCAST_ADDR, bp, length + 1 );
+	
+	return r_code;
 }
 
 status_t I3C::ccc_set( uint8_t ccc, uint8_t addr, uint8_t data )
