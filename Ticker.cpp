@@ -1,9 +1,8 @@
 /*
- * Copyright 2017 NXP
- * Copyright 2024 Tedd OKANO
- * All rights reserved.
+ * Copyright 2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
+ *
  */
 
 /*  Standard C Included Files */

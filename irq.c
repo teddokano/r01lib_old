@@ -1,3 +1,10 @@
+/*
+ * Copyright 2024 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ */
+
 #include "fsl_port.h"
 #include "fsl_gpio.h"
 #include "fsl_common.h"

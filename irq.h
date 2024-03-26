@@ -1,3 +1,10 @@
+/*
+ * Copyright 2024 NXP
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ */
+
 #ifndef R01LIB_IRQ_H
 #define	R01LIB_IRQ_H
 
