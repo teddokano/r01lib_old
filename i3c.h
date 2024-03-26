@@ -24,12 +24,16 @@
 #define	I3C_BROADCAST_ADDR		0x7E
 #define	PID_LENGTH				6
 
-#define I3C_OD_FREQ		4000000UL
-#define I3C_PP_FREQ		12500000UL
+#define I3C_OD_FREQ				4000000UL
+#define I3C_PP_FREQ				12500000UL
 
-#define	I3C_MODE		kI3C_TypeI3CSdr
-#define	I2C_MODE		kI3C_TypeI2C
-#define	I3CDDR_MODE		kI3C_TypeI3CDdr
+#define	I3C_MODE				kI3C_TypeI3CSdr
+#define	I2C_MODE				kI3C_TypeI2C
+#define	I3CDDR_MODE				kI3C_TypeI3CDdr
+
+#define	I3C_DEFAULT_FREQ		0
+
+#define	CUSTOM_REGISTAR_XFER
 
 /** CCC commands */
 enum CCC
@@ -69,12 +73,25 @@ public:
 	~I3C();
 	
 	/** Frequency settings
+	 * 
+	 * @param i2c_freq (option) define default scl frequency while I2C operation
+	 * @param i3c_od_freq (option) define default scl frequency while I3C open-drain operation
+	 * @param i3c_pp_freq (option) define default scl frequency while I3C push-pull operation
+	 * 
+	 *  @note use zero or I3C_DEFAULT_FREQ to set default frequency
 	 */
-	void		frequency( uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
+	void		frequency( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq );
 
-	/** Frequency settings reverted to default
+	/** All frequency settings reverted to default
 	 */
-	void		revert_frequency( void );
+	void		frequency( void );
+
+	/** mode setting
+	 *	I3C bus is configured to I3C-SDR, I3C-DDR or I2C
+	 *  
+	 * @param mode kI3C_TypeI3CSdr, kI3C_TypeI2C or kI3C_TypeI3CDdr
+	 */
+	void 		mode( i3c_bus_type_t mode );
 
 	/** write transaction
 	 *
@@ -96,13 +113,30 @@ public:
 	 */
 	status_t	read( uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
 	
-	/** mode setting
-	 *	I3C bus is configured to I3C-SDR, I3C-DDR or I2C
-	 *  
-	 * @param mode kI3C_TypeI3CSdr, kI3C_TypeI2C or kI3C_TypeI3CDdr
+#ifdef	CUSTOM_REGISTAR_XFER
+	/** Register write (multiple byte data)
+	 *	provideds interface for register write
+	 *	
+	 * @param targ target address
+	 * @param reg register address
+	 * @param dp data to write
+	 * @param length data length
+	 * @return status_t
 	 */
-	void 		mode( i3c_bus_type_t mode );
+	status_t	reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length );
 
+	/** Register read (multiple byte data)
+	 *	provideds interface for register read
+	 *	
+	 * @param targ target address
+	 * @param reg register address
+	 * @param dp data to write
+	 * @param length data length
+	 * @return status_t
+	 */
+	status_t	reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length );
+#endif	// CUSTOM_REGISTAR_XFER
+	
 	/** check IBI status
 	 *  
 	 * @return target address of IBI initiated device or zero if no event happened
@@ -153,7 +187,11 @@ public:
 
 private:
 	status_t	xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
-	
+
+#ifdef	CUSTOM_REGISTAR_XFER
+	status_t 	reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t reg, uint8_t *dp, int length );
+#endif	// CUSTOM_REGISTAR_XFER
+
 	i3c_bus_type_t								bus_type;
 	static const i3c_master_transfer_callback_t	masterCallback;
 	i3c_master_config_t							masterConfig;

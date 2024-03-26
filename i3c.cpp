@@ -61,9 +61,9 @@ I3C::I3C( int sda, int scl, uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3
 	
 	I3C_MasterGetDefaultConfig( &masterConfig );
 
-	masterConfig.baudRate_Hz.i2cBaud          = i2c_freq;
-	masterConfig.baudRate_Hz.i3cOpenDrainBaud = i3c_od_freq;
-	masterConfig.baudRate_Hz.i3cPushPullBaud  = i3c_pp_freq;	
+	masterConfig.baudRate_Hz.i2cBaud          = i2c_freq    ? i2c_freq    : I2C_FREQ;
+	masterConfig.baudRate_Hz.i3cOpenDrainBaud = i3c_od_freq ? i3c_od_freq : I3C_OD_FREQ;
+	masterConfig.baudRate_Hz.i3cPushPullBaud  = i3c_pp_freq ? i3c_pp_freq : I3C_PP_FREQ;	
 	masterConfig.enableOpenDrainStop          = false;
 	masterConfig.disableTimeout               = true;
 	
@@ -91,16 +91,21 @@ void I3C::frequency( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_fr
 {
 	i3c_baudrate_hz_t	baudRate_Hz;
 	
-	baudRate_Hz.i2cBaud				= i2c_freq;
-	baudRate_Hz.i3cOpenDrainBaud	= i3c_od_freq;
-	baudRate_Hz.i3cPushPullBaud  	= i3c_pp_freq;
+	baudRate_Hz.i2cBaud				= i2c_freq    ? i2c_freq    : masterConfig.baudRate_Hz.i2cBaud;
+	baudRate_Hz.i3cOpenDrainBaud	= i3c_od_freq ? i3c_od_freq : masterConfig.baudRate_Hz.i3cOpenDrainBaud;
+	baudRate_Hz.i3cPushPullBaud  	= i3c_pp_freq ? i3c_pp_freq : masterConfig.baudRate_Hz.i3cPushPullBaud;
 
 	I3C_MasterSetBaudRate( EXAMPLE_MASTER, &baudRate_Hz, I3C_MASTER_CLOCK_FREQUENCY );
 }
 
-void I3C::revert_frequency( void )
+void I3C::frequency( void )
 {
 	I3C_MasterSetBaudRate( EXAMPLE_MASTER, &(masterConfig.baudRate_Hz), I3C_MASTER_CLOCK_FREQUENCY );
+}
+
+void I3C::mode( i3c_bus_type_t mode )
+{
+	bus_type	= mode;
 }
 
 status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
@@ -112,12 +117,6 @@ status_t I3C::read( uint8_t targ, uint8_t *dp, int length, bool stop )
 {
 	return xfer( kI3C_Read, bus_type, targ, dp, length, stop );
 }
-
-void I3C::mode( i3c_bus_type_t mode )
-{
-	bus_type	= mode;
-}
-
 
 status_t I3C::xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop )
 {
@@ -132,6 +131,34 @@ status_t I3C::xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint
 	
 	return I3C_MasterTransferBlocking( EXAMPLE_MASTER, &masterXfer );
 }
+
+#ifdef	CUSTOM_REGISTAR_XFER
+status_t I3C::reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length )
+{
+	return reg_xfer( kI3C_Write, bus_type, targ, reg, (uint8_t *)dp, length );
+}
+
+status_t I3C::reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length )
+{
+	return reg_xfer( kI3C_Read, bus_type, targ, reg, dp, length );
+}
+
+status_t I3C::reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t reg, uint8_t *dp, int length )
+{
+	i3c_master_transfer_t masterXfer = {0};
+	
+	masterXfer.slaveAddress		= targ;
+	masterXfer.subaddress   	= reg;
+	masterXfer.subaddressSize	= 1;
+	masterXfer.data        		= dp;
+	masterXfer.dataSize			= length;
+	masterXfer.direction		= dir;
+	masterXfer.busType			= type;
+	masterXfer.flags			= kI3C_TransferDefaultFlag;
+	
+	return I3C_MasterTransferBlocking( EXAMPLE_MASTER, &masterXfer );
+}
+#endif	// CUSTOM_REGISTAR_XFER
 
 void I3C::set_IBI_callback( i3c_func_ptr fp )
 {
@@ -151,9 +178,9 @@ status_t I3C::ccc_broadcast( uint8_t ccc, const uint8_t *dp, uint8_t length, boo
 	{
 		first_broadcast	= false;
 		
-		frequency( 400000, 2000000, 2000000 );
+		frequency( 0, 2000000, 2000000 );	//	I2C_freq = default, I3C_OD_freq = 2MHz, I3C_PP_freq = 2MHz
 		r_code	= write( I3C_BROADCAST_ADDR, bp, length + 1 );
-		revert_frequency();
+		frequency();	//	revert to default frequency
 	}
 	
 	r_code	= write( I3C_BROADCAST_ADDR, bp, length + 1 );
