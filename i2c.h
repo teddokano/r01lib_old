@@ -8,29 +8,34 @@
 #ifndef R01LIB_I2C_H
 #define R01LIB_I2C_H
 
-/** I3C class
- *	
- *  @class I3C
- *
- *	A class for demonstrating I3C bus
- */
-
-extern "C" {
 #include	<string.h>
 #include	"fsl_lpi2c.h"
-}
 
-#define	I2C_FREQ			400000UL
-
-#define	STOP				true
-#define	NO_STOP				false
+/** I2C class
+ *	
+ *  @class I2C
+ *
+ *	A class for demonstrating I2C bus
+ */
 
 #define	REG_RW_BUFFER_SIZE	10
 
 class I2C
 {
 public:
-	
+	/** constants for STOP-cindition setting  */
+	enum STOP_CONDITION
+	{
+		STOP	= true,
+		NO_STOP	= false
+	};
+
+	/** constants for SCL frequency settings  */
+	enum FREQ
+	{
+		FREQ	= 400000UL
+	};
+		
 	/** Create an I2C instance with specified pins
 	 *
 	 * @param sda pin number to connect SDA

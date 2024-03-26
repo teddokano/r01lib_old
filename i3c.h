@@ -21,21 +21,9 @@
 #include	"i2c.h"
 #include	"fsl_i3c.h"
 
-#define	I3C_BROADCAST_ADDR		0x7E
-#define	PID_LENGTH				6
-
-#define I3C_OD_FREQ				4000000UL
-#define I3C_PP_FREQ				12500000UL
-
-#define	I3C_MODE				kI3C_TypeI3CSdr
-#define	I2C_MODE				kI3C_TypeI2C
-#define	I3CDDR_MODE				kI3C_TypeI3CDdr
-
-#define	I3C_DEFAULT_FREQ		0
-
 #define	CUSTOM_REGISTAR_XFER
 
-/** CCC commands */
+/** constants: CCC  */
 enum CCC
 {
 	BROADCAST_ENEC		= 0x00,
@@ -57,6 +45,28 @@ typedef void (*i3c_func_ptr)(void);
 class I3C : public I2C
 {
 public:
+	/** constants for mode setting  */
+	enum MODE
+	{
+		I3C_MODE	= kI3C_TypeI3CSdr,
+		I2C_MODE	= kI3C_TypeI2C,
+		I3CDDR_MODE	= kI3C_TypeI3CDdr
+	};
+	
+	/** constants for SCL frequency settings  */
+	enum FREQ
+	{
+		OD_FREQ					= 4000000UL,
+		PP_FREQ					= 12500000UL,
+		DEFAULT_FREQ_SETTING	= 0
+	};
+	
+	/** constants for miscellaneous setting  */
+	enum MISC
+	{
+		BROADCAST_ADDR	= 0x7E,
+		PID_LENGTH		= 6
+	};
 
 	/** Create an I3C instance with specified pins
 	 *
@@ -66,7 +76,7 @@ public:
 	 * @param i3c_od_freq (option) define default scl frequency while I3C open-drain operation
 	 * @param i3c_pp_freq (option) define default scl frequency while I3C push-pull operation
 	 */
-	I3C( int sda, int scl, uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
+	I3C( int sda, int scl, uint32_t i2c_freq = I2C::FREQ, uint32_t i3c_od_freq = OD_FREQ, uint32_t i3c_pp_freq = PP_FREQ );
 
 	/** Destractor to freeing I3C resource
 	 */
@@ -91,7 +101,7 @@ public:
 	 *  
 	 * @param mode kI3C_TypeI3CSdr, kI3C_TypeI2C or kI3C_TypeI3CDdr
 	 */
-	void 		mode( i3c_bus_type_t mode );
+	void 		mode( MODE mode );
 
 	/** write transaction
 	 *
@@ -189,15 +199,13 @@ private:
 	status_t	xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
 
 #ifdef	CUSTOM_REGISTAR_XFER
-	status_t 	reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t reg, uint8_t *dp, int length );
+	status_t 	reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t reg, uint8_t reg_length, uint8_t *dp, int length );
 #endif	// CUSTOM_REGISTAR_XFER
 
 	i3c_bus_type_t								bus_type;
 	static const i3c_master_transfer_callback_t	masterCallback;
 	i3c_master_config_t							masterConfig;
 	bool										first_broadcast;
-
-
 };
 
 #endif // R01LIB_I3C_H

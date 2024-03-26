@@ -79,10 +79,7 @@ I2C::~I2C()
 
 void I2C::frequency( uint32_t frequency )
 {
-	masterConfig.baudRate_Hz	= frequency;
-
-	LPI2C_MasterDeinit( EXAMPLE_I2C_MASTER );
-	LPI2C_MasterInit( EXAMPLE_I2C_MASTER, &masterConfig, LPI2C_MASTER_CLOCK_FREQUENCY );
+	LPI2C_MasterSetBaudRate( EXAMPLE_I2C_MASTER, LPI2C_MASTER_CLOCK_FREQUENCY, frequency );
 }
 
 status_t I2C::write( uint8_t address, const uint8_t *dp, int length, bool stop )
