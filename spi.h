@@ -13,6 +13,7 @@ extern "C" {
 }
 
 #include	"spi.h"
+#include	"io.h"
 
 #define	SPI_FREQ		1000000UL
 
