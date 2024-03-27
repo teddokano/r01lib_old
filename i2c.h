@@ -138,7 +138,8 @@ public:
 	virtual uint8_t		read( uint8_t targ, bool stop = STOP );
 
 	/** method for I3C class compatibility (dummy method)
-	 * does notheing but return kStatus_Success
+	 * Does notheing but return kStatus_Success
+	 * This method is for just make easy device class using I3C
 	 * 
 	 * @param ccc CCC command
 	 * @param data single byte data
@@ -147,8 +148,9 @@ public:
 	virtual status_t	ccc_set( uint8_t ccc, uint8_t addr, uint8_t data );
 
 	/** method for I3C class compatibility (dummy method)
-	 * does notheing but clearing data buffer and return kStatus_Success
-	 *  
+	 * Does notheing but clearing data buffer and return kStatus_Success
+	 * This method is for just make easy device class using I3C
+	 * 
 	 * @param ccc CCC command
 	 * @param dp data to send
 	 * @param length data length

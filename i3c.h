@@ -185,6 +185,13 @@ public:
 	 */
 	status_t	ccc_get( uint8_t ccc, uint8_t addr, uint8_t *dp, uint8_t length );
 
+	/** perform DAA procedure
+	 *  
+	 * @param address_list new address list to be assigned
+	 * @param list_length address list length
+	 * @param device_list pointer to i3c_device_info_t array which is dealeared as static array in I3C driver
+	 * @return int for number of devices which has newly assigned addresses (max 10)
+	 */
 	int			DAA( const uint8_t *address_list, uint8_t list_length, i3c_device_info_t** device_list );
 	
 	/** master_ibi_callback

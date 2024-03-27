@@ -200,6 +200,7 @@
 #define	SPI_MISO			D12
 #define	SPI_SCLK			D13
 
+/** pin names  */
 enum { 	D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D18, D19,
 		A0, A1, A2, A3, A4, A5, 
 		SW2, SW3,
@@ -210,18 +211,52 @@ enum { 	D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D18, D19,
 #define	PIN_LED_OFF	true
 #define	PIN_LED_ON	false
 
+
+/** DigitalInOut class
+ *	
+ *  @class DigitalInOut
+ *
+ *	A class for operating GPIO easy
+ */
+
 class DigitalInOut
 {
 public:
+	/** Create a DigitalInOut instance with specified pins
+	 *
+	 * @param pin_num pin number
+	 * @param direction (option) direction setting
+	 * @param value (option) default value for output
+	 */
 	DigitalInOut( uint8_t pin_num, bool direction = kGPIO_DigitalInput, bool value = 0 );
+
+	/** Destractor
+	 */
 	~DigitalInOut();
 	
+	/** Pin output seting
+	 *
+	 * @param value setting output
+	 */
 	void	value( bool value );
+
+	/** Pin input state read
+	 *
+	 * @return pin state
+	 */
 	bool	value( void );
 	
+	/** Pin direction to set as output
+	 */
 	void	output( void );
+
+	/** Pin direction to set as in
+	 */
 	void	input( void );
 
+	/** Pin mux setting
+	 * This interface is provided to other class drivers to change pin config dynamically
+	 */
 	void	pin_mux( int mux );
 		
 	/** A short hand for setting pins
@@ -244,6 +279,13 @@ private:
 	bool 	_value;
 };
 
+/** DigitalOut class
+ *	
+ *  @class DigitalOut
+ *
+ *	A class for operating GPIO easy
+ */
+
 class DigitalOut : public DigitalInOut
 {
 public:
@@ -252,6 +294,13 @@ public:
 	DigitalOut( uint8_t pin_num, bool value = 0 );
 	~DigitalOut();
 };
+
+/** DigitalIn class
+ *	
+ *  @class DigitalIn
+ *
+ *	A class for operating GPIO easy
+ */
 
 class DigitalIn : public DigitalInOut
 {

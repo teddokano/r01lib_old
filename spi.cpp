@@ -97,8 +97,8 @@ void SPI::frequency( uint32_t frequency )
 
 void SPI::mode( uint8_t mode )
 {
-	masterConfig.cpol	= (lpspi_clock_polarity_t)((mode >> 0) & 0x1);
-	masterConfig.cpha	= (lpspi_clock_phase_t   )((mode >> 1) & 0x1);
+	masterConfig.cpol	= (lpspi_clock_polarity_t)((mode >> 1) & 0x1);
+	masterConfig.cpha	= (lpspi_clock_phase_t   )((mode >> 0) & 0x1);
 
 	LPSPI_Deinit( EXAMPLE_LPSPI_MASTER_BASEADDR );
 	LPSPI_MasterInit( EXAMPLE_LPSPI_MASTER_BASEADDR, &masterConfig, LPSPI_MASTER_CLK_FREQ );	
