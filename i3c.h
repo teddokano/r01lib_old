@@ -133,7 +133,7 @@ public:
 	 * @param length data length
 	 * @return status_t
 	 */
-	status_t	reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length );
+	status_t	reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length, bool stop = STOP );
 
 	/** Register read (multiple byte data)
 	 *	provideds interface for register read
@@ -144,7 +144,7 @@ public:
 	 * @param length data length
 	 * @return status_t
 	 */
-	status_t	reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length );
+	status_t	reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length, bool stop = STOP );
 #endif	// CUSTOM_REGISTAR_XFER
 	
 	/** check IBI status
@@ -185,6 +185,8 @@ public:
 	 */
 	status_t	ccc_get( uint8_t ccc, uint8_t addr, uint8_t *dp, uint8_t length );
 
+	int			DAA( const uint8_t *address_list, uint8_t list_length, i3c_device_info_t** device_list );
+	
 	/** master_ibi_callback
 	 *  interface function for SDK
 	 */	
@@ -199,7 +201,7 @@ private:
 	status_t	xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
 
 #ifdef	CUSTOM_REGISTAR_XFER
-	status_t 	reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t reg, uint8_t reg_length, uint8_t *dp, int length );
+	status_t 	reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t reg, uint8_t reg_length, uint8_t *dp, int length, bool stop = STOP );
 #endif	// CUSTOM_REGISTAR_XFER
 
 	i3c_bus_type_t								bus_type;

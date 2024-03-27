@@ -118,17 +118,17 @@ status_t I3C::read( uint8_t targ, uint8_t *dp, int length, bool stop )
 }
 
 #ifdef	CUSTOM_REGISTAR_XFER
-status_t I3C::reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length )
+status_t I3C::reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length, bool stop )
 {
 	return reg_xfer( kI3C_Write, bus_type, targ, reg, 1, (uint8_t *)dp, length );
 }
 
-status_t I3C::reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length )
+status_t I3C::reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length, bool stop )
 {
 	return reg_xfer( kI3C_Read, bus_type, targ, reg, 1, dp, length );
 }
 
-status_t I3C::reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t reg, uint8_t reg_length, uint8_t *dp, int length )
+status_t I3C::reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t reg, uint8_t reg_length, uint8_t *dp, int length, bool stop )
 {
 	i3c_master_transfer_t masterXfer = {0};
 	
@@ -139,14 +139,14 @@ status_t I3C::reg_xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, 
 	masterXfer.dataSize			= length;
 	masterXfer.direction		= dir;
 	masterXfer.busType			= type;
-	masterXfer.flags			= kI3C_TransferDefaultFlag;
+	masterXfer.flags			= stop ? kI3C_TransferDefaultFlag : kI3C_TransferNoStopFlag;
 	
 	return I3C_MasterTransferBlocking( EXAMPLE_MASTER, &masterXfer );
 }
 
 status_t I3C::xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop )
 {
-	return reg_xfer( kI3C_Read, bus_type, targ, 0, 0, dp, length );
+	return reg_xfer( dir, bus_type, targ, 0, 0, dp, length, stop );
 }
 #else
 status_t I3C::xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop )
@@ -263,3 +263,15 @@ const i3c_master_transfer_callback_t	I3C::masterCallback = {
 	.ibiCallback		= master_ibi_callback,
 	.transferComplete	= master_callback
 };
+
+
+int I3C::DAA( const uint8_t *address_list, uint8_t count, i3c_device_info_t** device_list )
+{
+	I3C_MasterProcessDAA( EXAMPLE_MASTER, (uint8_t *)address_list, count );
+
+	uint8_t	devCount;
+	*device_list = I3C_MasterGetDeviceListAfterDAA( EXAMPLE_MASTER, &devCount );
+
+	return devCount;
+}
+
