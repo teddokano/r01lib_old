@@ -10,6 +10,7 @@
 
 #include	<string.h>
 #include	"fsl_lpi2c.h"
+#include	"obj.h"
 
 /** I2C class
  *	
@@ -20,7 +21,7 @@
 
 #define	REG_RW_BUFFER_SIZE	10
 
-class I2C
+class I2C: public Obj
 {
 public:
 	/** constants for STOP-cindition setting  */

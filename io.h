@@ -12,6 +12,7 @@
 #include	"pin_mux.h"
 #include	"clock_config.h"
 #include	"board.h"
+#include	"obj.h"
 
 #define	PIN_OUTPUT			kGPIO_DigitalOutput
 #define	PIN_INPUT			kGPIO_DigitalInput
@@ -42,7 +43,7 @@
 	#define D13_GPIO			0
 	#define D18_GPIO			4
 	#define D19_GPIO			4
-	#define SW2_GPIO			D5_GPIO
+	#define SW2_GPIO			A5_GPIO
 	#define SW3_GPIO			0
 	#define	MB_AN_GPIO			DISABLED_GPIO
 	#define	MB_RST_GPIO			1
@@ -219,7 +220,7 @@ enum { 	D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D18, D19,
  *	A class for operating GPIO easy
  */
 
-class DigitalInOut
+class DigitalInOut: public Obj
 {
 public:
 	/** Create a DigitalInOut instance with specified pins

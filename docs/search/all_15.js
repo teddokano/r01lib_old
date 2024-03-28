@@ -6,6 +6,7 @@ var searchData=
   ['_7ei2c_3',['~I2C',['../class_i2_c.html#afaad09fa9bdd23623bddbdcd7585a9fe',1,'I2C']]],
   ['_7ei3c_4',['~I3C',['../class_i3_c.html#adbac9f9e25563f1fd8618b12afb8fbf5',1,'I3C']]],
   ['_7einterruptin_5',['~InterruptIn',['../class_interrupt_in.html#a76ee25024a8c5b59552de6b054afd865',1,'InterruptIn']]],
-  ['_7espi_6',['~SPI',['../class_s_p_i.html#a6babebf1ea3e8ff0330f43a3e2312ac4',1,'SPI']]],
-  ['_7eticker_7',['~Ticker',['../class_ticker.html#af19442994442b69ac58939de373d655f',1,'Ticker']]]
+  ['_7eobj_6',['~Obj',['../class_obj.html#a71f4773f4d79208c5bce501f05659425',1,'Obj']]],
+  ['_7espi_7',['~SPI',['../class_s_p_i.html#a6babebf1ea3e8ff0330f43a3e2312ac4',1,'SPI']]],
+  ['_7eticker_8',['~Ticker',['../class_ticker.html#af19442994442b69ac58939de373d655f',1,'Ticker']]]
 ];

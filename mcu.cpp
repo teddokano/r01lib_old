@@ -21,13 +21,14 @@ extern "C" {
 }
 
 #include "mcu.h"
+#include "obj.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wprio-ctor-dtor"
-__attribute__((constructor(0))) 
+__attribute__((constructor(0)))
 void start_mcu()
 {
-	init_mcu();
+	Obj	o( false );
 }
 
 __attribute__((constructor(1)))
@@ -109,7 +110,7 @@ void wait( float delayTime_sec )
 void panic( const char *s )
 {
 	printf( "error: %s", s );
-	
+
 	typedef struct			{ int on; int off; }	single_code_t;
 	static single_code_t	code[]	= { { 1, 1 }, { 1, 1 }, { 1, 3 }, { 3, 1 },  { 3, 1 }, { 3, 3 }, { 1, 1 }, { 1, 1 }, { 1, 7 } };
 	DigitalOut				leds[]	= { DigitalOut( RED ), DigitalOut( GREEN ), DigitalOut( BLUE ) };
@@ -130,4 +131,3 @@ void panic( const char *s )
 		}
 	}
 }
-

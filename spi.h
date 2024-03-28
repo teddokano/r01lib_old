@@ -24,7 +24,7 @@ extern "C" {
  *	A class for demonstrating SPI bus
  */
 
-class SPI
+class SPI : public Obj
 {
 public:
 	

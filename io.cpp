@@ -67,7 +67,7 @@ extern "C" {
 
 
 DigitalInOut::DigitalInOut( uint8_t pin_num, bool direction, bool v )
-	: _pn( pin_num ), _dir( direction ), _value( v )
+	: Obj( true ), _pn( pin_num ), _dir( direction ), _value( v )
 {
 	if ( -1 == pins[ _pn ].base )
 		return;

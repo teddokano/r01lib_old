@@ -43,6 +43,6 @@ var searchData=
   ['mcu_2ecpp_40',['mcu.cpp',['../mcu_8cpp.html',1,'']]],
   ['mcu_2eh_41',['mcu.h',['../mcu_8h.html',1,'']]],
   ['misc_42',['MISC',['../class_i3_c.html#a2fe3725df0ba7782c7b1d9059c75ff17',1,'I3C']]],
-  ['mode_43',['MODE',['../class_i3_c.html#a90bae46fc3e240503e1384f4a2a324a8',1,'I3C']]],
-  ['mode_44',['mode',['../class_i3_c.html#abe810aadd065a05757bc84420a7a17b6',1,'I3C::mode()'],['../class_s_p_i.html#ad7f4e6091db10cddd215d29fea9cd5f4',1,'SPI::mode()']]]
+  ['mode_43',['mode',['../class_i3_c.html#abe810aadd065a05757bc84420a7a17b6',1,'I3C::mode()'],['../class_s_p_i.html#ad7f4e6091db10cddd215d29fea9cd5f4',1,'SPI::mode()']]],
+  ['mode_44',['MODE',['../class_i3_c.html#a90bae46fc3e240503e1384f4a2a324a8',1,'I3C']]]
 ];

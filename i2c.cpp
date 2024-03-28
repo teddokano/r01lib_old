@@ -32,7 +32,7 @@ extern "C" {
 #define EXAMPLE_I2C_MASTER				((LPI2C_Type *)EXAMPLE_I2C_MASTER_BASE)
 #endif
 
-I2C::I2C( int sda, int scl, bool no_hw )
+I2C::I2C( int sda, int scl, bool no_hw ) : Obj( true )
 {
 	if ( no_hw )
 		return;

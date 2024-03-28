@@ -14,4 +14,5 @@ void	init_mcu( void );
 void	wait( float delayTime_sec );
 void 	panic( const char *s );
 
-#endif
+
+#endif // R01LIB_MCU_H

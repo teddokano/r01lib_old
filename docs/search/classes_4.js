@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ticker_0',['Ticker',['../class_ticker.html',1,'']]]
+  ['spi_0',['SPI',['../class_s_p_i.html',1,'']]]
 ];

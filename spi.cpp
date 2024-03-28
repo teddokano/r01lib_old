@@ -39,7 +39,7 @@ extern "C" {
 #define TRANSFER_BAUDRATE 500000U /*! Transfer baudrate - 500k */
 #endif
 
-SPI::SPI( int mosi, int miso, int sclk, int cs )
+SPI::SPI( int mosi, int miso, int sclk, int cs ) : Obj( true )
 {
 #ifdef	CPU_MCXN947VDF
 #else
