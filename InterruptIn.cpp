@@ -33,9 +33,6 @@ extern "C" {
 	static	IRQn_Type	irqs[]		= GPIO_IRQS;
 #endif //CPU_MCXN947VDF
 
-void irq_handler( int num );
-
-
 utick_callback_t	cb_table[ N_GPIO ][ GPIO_BITS ]	= { NULL };
 
 void irq_handler( int num )

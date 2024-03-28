@@ -31,7 +31,7 @@ void start_mcu()
 	Obj	o( false );
 }
 
-__attribute__((constructor(1)))
+//__attribute__((constructor(1)))
 void start_message()
 {
 	PRINTF("\r\n***  MCU initialized properly  ***\r\n");

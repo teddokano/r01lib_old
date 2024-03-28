@@ -5,10 +5,10 @@
  *
  */
 
-#include "fsl_port.h"
-#include "fsl_gpio.h"
-#include "fsl_common.h"
-#include "fsl_debug_console.h"
+#include	"fsl_port.h"
+#include	"fsl_gpio.h"
+#include	"fsl_common.h"
+#include	"fsl_debug_console.h"
 
 #include	"irq.h"
 
@@ -36,8 +36,6 @@ void GPIO40_IRQHandler( void )
 void GPIO50_IRQHandler( void )
 {	irq_handler( 5 );
 }
-
-
 
 #else // CPU_MCXN947VDF
 void GPIO0_IRQHandler( void )

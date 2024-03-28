@@ -60,7 +60,6 @@
 	#define	P3T_SDA_GPIO		1
 	#define	P3T_SCL_GPIO		1
 
-
 	#define A0_GPIO_PIN			DISABLED_PIN
 	#define A1_GPIO_PIN			DISABLED_PIN
 	#define A2_GPIO_PIN			14U
